@@ -1,0 +1,139 @@
+---
+title: "New tour methods for visualizing high-dimensional data"
+subtitle: "**Ursula Laa** <br> University of Natural Resources and Life Sciences, Vienna <br> <font color='black'> uschilaa.github.io/slides_cladag23 </font> "
+format:
+  revealjs:
+    theme: [default, 'boku.scss']
+    scrollable: true
+    slide-number: true
+    code-line-numbers: false
+    reference-location: document
+    preview-links: auto
+    logo: 'BOKU-logo.svg'
+    footer: "uschilaa.github.io/slides_cladag23"
+    # embed-resources: true
+    chalkboard:
+      buttons: false
+---
+## Tour visualization
+View data in more than 3 dimensions, by animating an interpolated sequence of low-D projections, e.g. hypercube in 6d or numeric measurements from  `palmerpenguins`
+
+::: {.v-center-container}
+<img src="c6.gif" width = "45%"/>        </a>
+<img src="penguins2d.gif" width = "45%"/> 
+:::
+
+
+## What is new?
+
+Recent work has focused on two questions:
+
+#### How can we use tours in the case of **large data**?
+
+- Large number of **observations**: overplotting can hide features, especially in the case of concave distributions &rarr; **slice tour** [Laa et al (2020)](https://doi.org/10.1080/10618600.2020.1777140)
+- Large number of **variables**: projected data points tend to fall close to the center (crowding problem) &rarr; **sage tour** [Laa et al (2021)](https://doi.org/10.1080/10618600.2021.1963264)
+
+## What is new?
+#### Can we make tour displays interactive to learn more?
+
+- Having **manual controls** of the projection allows the viewer to understand which variables are important, e.g. for separating groups &rarr; [Laa et al (2023)](https://doi.org/10.1080/10618600.2023.2206459)
+- Leverage javascript interfaces, shiny apps, etc. to build an **interactive display**, for example `detourr` or `langevitour`
+
+The history and some of these new developments were summarized in [Lee et al (2021)](https://doi.org/10.1002/wics.1573)
+
+
+## Manual controls in action
+
+Manually exploring projections of the `palmerpenguins`
+
+<img src="exploring_penguin_data.gif" width = "80%"/> 
+
+For more see [uschilaa.github.io/slides_dssv_23](http://uschilaa.github.io/slides_dssv_23)
+
+## Interpolation algorithm
+
+Apart from the interactive manual tour we view tour visualizations as automatic animations that are combining two components:
+
+- **Basis selection** to pick projections that we want to visit along the tour path, for example random selection (*grand tour*) or optimization of a projection pursuit index (*guided tour*)
+- **Basis interpolation** generates the smooth transition from one selected basis to the next, typically along the shortest path (*geodesic interpolation*)
+
+
+## Interpolation algorithm
+
+Geodesic interpolation means we find the shortest path from the starting projection to the selected target, this means that there is **no within plane rotation**, and the final view might be rotated compared to the selected target.
+
+Most of the time this is what we want, but there are some exceptions. In particular, if we run a *guided tour* with a *projection pursuit index* that is not rotation invariant [Laa and Cook (2020)](https://doi.org/10.1007/s00180-020-00954-8).
+
+In that case we want **frame-to-frame** interpolation instead.
+
+## Simple example
+
+We measure functional dependence with an index based on a spline model using the x-direction as predictor and the y-direction as response variable
+
+::: {.v-center-container}
+<img src="splines2d-static-1.png" width = "95%"/>
+:::
+
+## Frame-to-frame interpolation
+
+As an alternative to geodesic interpolation, the interpolation via **Givens rotations**, as described in [Buja et al (2005)](https://doi:10.1016/S0169-7161(04)24014-7), has been implemented in the `woylier` package available on CRAN.
+
+::: {.v-center-container}
+<img src="sphere.gif" width = "40%"/>        </a>
+<img src="torus.gif" width = "40%"/> 
+:::
+
+## Sketching the algorithm
+
+::: {style="font-size: 75%;"}
+
+- We start by finding a *preprojection basis* and get the preprojected starting and target frames. In the preprojected starting frame all entries are either 0 or 1.
+- We construct a sequence of Givens rotations that maps the preprojected target frame to the preprojected starting frame by zeroing out one element at a time.
+- By inverting this mapping we find the rotation that takes us from the starting frame to the target.
+- To construct the interpolation we split each rotation angle into the number of steps selected.
+- We use the rotated preprojected frame at each step to find the projection matrix used to project the data.
+
+This is then embedded in the `tourr` implementation which interleaves the interpolation with target selection and the display.
+
+:::
+
+## Application
+
+Non-linear dependence can appear in cross-rates for currencies in particular in case of special events impacting several currencies. We use data from openexchangerates to examine this between 2019-11-1 to 2020-03-31.
+
+
+![[Standardized exchange rates relative to USD, with sign flipped]](currency-1.png){fig-align="center" width=70%}
+
+## Looking for functional dependence
+
+We use our spline index within the guided tour with either geodesic or Givens interpolation, to look for non-linear functional dependence in these rates.
+
+**Result:** with geodesic interpolation (left) and with Givens interpolation (right)
+
+::: {.v-center}
+<img src="rates_tour_better.gif" width = "35%"/> </a>
+<img src="rates_tour_givens.gif" width = "35%"/>
+:::
+
+
+## Summary
+
+- New manual tour interface in Mathematica allows the viewer to inspect different projections and slices of the data
+- New interpolation methods can help the projection pursuit guided tour when the index is not rotation invariant, or when there is a preferred viewing orientation
+- 
+- The work was implemented in Mathematica and R, all code is available via GitHub or CRAN
+
+## Thank you!
+
+<br>
+
+Work on the manual tour was done in collaboration with **Alex Aumann**, **Di Cook** and **German Valencia**.
+
+<br>
+
+Work on Givens interpolation is done in collaboration with **Zoljargal Batsaikhan** and **Di Cook**.
+
+<br>
+
+These slides are made with Quarto using a template prepared by **Matthias Schlögl**.
+
