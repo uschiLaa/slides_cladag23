@@ -52,7 +52,7 @@ For more see [uschilaa.github.io/slides_dssv_23](http://uschilaa.github.io/slide
 
 ## Interpolation algorithm
 
-Apart from the interactive manual tour we view tour visualizations as automatic animations that are combining two components:
+Typically we view tour visualizations as automatic animations that are combining two components:
 
 - **Basis selection** to pick projections that we want to visit along the tour path, for example random selection (*grand tour*) or optimization of a projection pursuit index (*guided tour*)
 - **Basis interpolation** generates the smooth transition from one selected basis to the next, typically along the shortest path (*geodesic interpolation*)
@@ -60,11 +60,9 @@ Apart from the interactive manual tour we view tour visualizations as automatic 
 
 ## Interpolation algorithm
 
-Geodesic interpolation means we find the shortest path from the starting projection to the selected target, this means that there is **no within plane rotation**, and the final view might be rotated compared to the selected target.
-
-Most of the time this is what we want, but there are some exceptions. In particular, if we run a *guided tour* with a *projection pursuit index* that is not rotation invariant [Laa and Cook (2020)](https://doi.org/10.1007/s00180-020-00954-8).
-
-In that case we want **frame-to-frame** interpolation instead.
+- **Geodesic interpolation**: shortest path from the starting projection to the selected target &rarr; **no within plane rotation**, the final view might be rotated compared to the selected target
+- **Limitation**: in a *guided tour* with a *projection pursuit index* that is not rotation invariant the within-plane rotation of the geodesic interpolation causes problems (index value of the originally selected target and the final view may be very different) [Laa and Cook (2020)](https://doi.org/10.1007/s00180-020-00954-8)
+- **Alternative**: use **frame-to-frame** interpolation instead
 
 ## Simple example
 
@@ -76,11 +74,11 @@ We measure functional dependence with an index based on a spline model using the
 
 ## Frame-to-frame interpolation
 
-As an alternative to geodesic interpolation, the interpolation via **Givens rotations**, as described in [Buja et al (2005)](https://doi:10.1016/S0169-7161(04)24014-7), has been implemented in the `woylier` package available on CRAN.
+Interpolation via **Givens rotations**, as described in [Buja et al (2005)](https://doi:10.1016/S0169-7161(04)24014-7), has been implemented in the `woylier` package
 
 ::: {.v-center-container}
-<img src="sphere.gif" width = "40%"/>        </a>
-<img src="torus.gif" width = "40%"/> 
+<img src="sphere.gif" width = "45%"/>        </a>
+<img src="torus.gif" width = "45%"/>
 :::
 
 ## Sketching the algorithm
@@ -99,20 +97,23 @@ This is then embedded in the `tourr` implementation which interleaves the interp
 
 ## Application
 
-Non-linear dependence can appear in cross-rates for currencies in particular in case of special events impacting several currencies. We use data from openexchangerates to examine this between 2019-11-1 to 2020-03-31.
+Non-linear dependence can appear in cross-rates for currencies. We use data from openexchangerates to examine this between 2019-11-1 to 2020-03-31.
 
 
-![[Standardized exchange rates relative to USD, with sign flipped]](currency-1.png){fig-align="center" width=70%}
+![Figure: Standardized exchange rates relative to USD, with sign flipped](currency-1.png){fig-align="center" width=70%}
 
 ## Looking for functional dependence
 
-We use our spline index within the guided tour with either geodesic or Givens interpolation, to look for non-linear functional dependence in these rates.
-
-**Result:** with geodesic interpolation (left) and with Givens interpolation (right)
+We use our spline index within the guided tour with either geodesic or Givens interpolation, to look for non-linear functional dependence in these rates
 
 ::: {.v-center}
-<img src="rates_tour_better.gif" width = "35%"/> </a>
-<img src="rates_tour_givens.gif" width = "35%"/>
+<img src="currency-final-views.png"/> </a>
+:::
+
+## Tracing the index values
+
+::: {.v-center}
+<img src="traces.png" width = 75%/> </a>
 :::
 
 
@@ -120,7 +121,7 @@ We use our spline index within the guided tour with either geodesic or Givens in
 
 - New manual tour interface in Mathematica allows the viewer to inspect different projections and slices of the data
 - New interpolation methods can help the projection pursuit guided tour when the index is not rotation invariant, or when there is a preferred viewing orientation
-- 
+- Using Givens interpolation and the spline index we found a functional relation in the cross currency data, with geodesic interpolation the optimization does not work properly
 - The work was implemented in Mathematica and R, all code is available via GitHub or CRAN
 
 ## Thank you!
