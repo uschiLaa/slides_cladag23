@@ -340,23 +340,13 @@
 <p><img src="c6.gif" width="45%">  <img src="penguins2d.gif" width="45%"></p>
 </div>
 </section>
-<section id="what-is-new" class="slide level2">
-<h2>What is new?</h2>
-<p>Recent work has focused on two questions:</p>
-<h4 id="how-can-we-use-tours-in-the-case-of-large-data">How can we use tours in the case of <strong>large data</strong>?</h4>
+<section id="manual-controls" class="slide level2">
+<h2>Manual controls</h2>
 <ul>
-<li>Large number of <strong>observations</strong>: overplotting can hide features, especially in the case of concave distributions → <strong>slice tour</strong> <a href="https://doi.org/10.1080/10618600.2020.1777140">Laa et al (2020)</a></li>
-<li>Large number of <strong>variables</strong>: projected data points tend to fall close to the center (crowding problem) → <strong>sage tour</strong> <a href="https://doi.org/10.1080/10618600.2021.1963264">Laa et al (2021)</a></li>
+<li><strong>Grand tour</strong>: randomly select planes and then interpolate between selected targets - gives a good overview but it can be hard to interpret, e.g.&nbsp;which variables are important for separating groups</li>
+<li><strong>Manual controls</strong>: allow the viewer to change the projection from the axis display, this was implemented in <em>Mathematica</em> <a href="https://doi.org/10.1080/10618600.2023.2206459">Laa et al (2023)</a></li>
 </ul>
-</section>
-<section id="what-is-new-1" class="slide level2">
-<h2>What is new?</h2>
-<h4 id="can-we-make-tour-displays-interactive-to-learn-more">Can we make tour displays interactive to learn more?</h4>
-<ul>
-<li>Having <strong>manual controls</strong> of the projection allows the viewer to understand which variables are important, e.g.&nbsp;for separating groups → <a href="https://doi.org/10.1080/10618600.2023.2206459">Laa et al (2023)</a></li>
-<li>Leverage javascript interfaces, shiny apps, etc. to build an <strong>interactive display</strong>, for example <code>detourr</code> or <code>langevitour</code></li>
-</ul>
-<p>The history and some of these new developments were summarized in <a href="https://doi.org/10.1002/wics.1573">Lee et al (2021)</a></p>
+<p>The implementation also includes <strong>sectioning</strong> via the <strong>slice tour</strong>, the slice center can also be shifted manually</p>
 </section>
 <section id="manual-controls-in-action" class="slide level2">
 <h2>Manual controls in action</h2>

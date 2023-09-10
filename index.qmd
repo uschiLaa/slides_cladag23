@@ -24,22 +24,14 @@ View data in more than 3 dimensions, by animating an interpolated sequence of lo
 :::
 
 
-## What is new?
+## Manual controls
 
-Recent work has focused on two questions:
+- **Grand tour**: randomly select planes and then interpolate between selected targets - gives a good overview but it can be hard to interpret, e.g. which variables are important for separating groups
+- **Manual controls**: allow the viewer to change the projection from the axis display, this was implemented in *Mathematica* [Laa et al (2023)](https://doi.org/10.1080/10618600.2023.2206459)
 
-#### How can we use tours in the case of **large data**?
+The implementation also includes **sectioning** via the **slice tour**, the slice center can also be shifted manually
 
-- Large number of **observations**: overplotting can hide features, especially in the case of concave distributions &rarr; **slice tour** [Laa et al (2020)](https://doi.org/10.1080/10618600.2020.1777140)
-- Large number of **variables**: projected data points tend to fall close to the center (crowding problem) &rarr; **sage tour** [Laa et al (2021)](https://doi.org/10.1080/10618600.2021.1963264)
 
-## What is new?
-#### Can we make tour displays interactive to learn more?
-
-- Having **manual controls** of the projection allows the viewer to understand which variables are important, e.g. for separating groups &rarr; [Laa et al (2023)](https://doi.org/10.1080/10618600.2023.2206459)
-- Leverage javascript interfaces, shiny apps, etc. to build an **interactive display**, for example `detourr` or `langevitour`
-
-The history and some of these new developments were summarized in [Lee et al (2021)](https://doi.org/10.1002/wics.1573)
 
 
 ## Manual controls in action
